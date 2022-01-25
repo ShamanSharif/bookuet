@@ -2,6 +2,7 @@ import 'package:bookuet/controller/data_fetcher.dart';
 import 'package:bookuet/controller/responsive.dart';
 import 'package:bookuet/model/book.dart';
 import 'package:bookuet/model/constants.dart';
+import 'package:bookuet/view/book_reader.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -129,21 +130,50 @@ class _BookViewState extends State<BookView> {
                             : const SizedBox(),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 20.0),
-                          child: MaterialButton(
-                            minWidth: 200,
-                            color: CustomColor.textColor,
-                            onPressed: bookDetails == null
-                                ? null
-                                : () {
-                                    _launchURL(url: bookDetails!.downloadUrl);
-                                  },
-                            child: Text(
-                              "Download",
-                              style: TextStyle(
-                                color: CustomColor.light,
-                                fontWeight: FontWeight.bold,
+                          child: Row(
+                            children: [
+                              MaterialButton(
+                                minWidth: 200,
+                                color: CustomColor.textColor,
+                                onPressed: bookDetails == null
+                                    ? null
+                                    : () {
+                                        _launchURL(
+                                            url: bookDetails!.downloadUrl);
+                                      },
+                                child: Text(
+                                  "Download",
+                                  style: TextStyle(
+                                    color: CustomColor.light,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
-                            ),
+                              MaterialButton(
+                                minWidth: 200,
+                                color: CustomColor.textColor,
+                                onPressed: bookDetails == null
+                                    ? null
+                                    : () {
+                                        // TODO: read book
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) => BookReader(
+                                              bookUrl: bookDetails!.downloadUrl,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                child: Text(
+                                  "Read Now",
+                                  style: TextStyle(
+                                    color: CustomColor.light,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],

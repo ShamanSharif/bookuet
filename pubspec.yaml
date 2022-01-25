@@ -36,6 +36,8 @@ dependencies:
   dio: ^4.0.4
   eva_icons_flutter: ^3.0.2
   url_launcher: ^6.0.17
+  native_pdf_view: ^5.0.0
+  path_provider: ^2.0.8
 
 dev_dependencies:
   flutter_test:

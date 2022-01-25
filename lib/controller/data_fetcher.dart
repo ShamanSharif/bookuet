@@ -71,4 +71,9 @@ class DataFetcher {
     }
     return bookDetails;
   }
+
+  Future<bool> downloadPdf({required String url}) async {
+    Response<dynamic> response = await _connectionHelper.downloadFile(url: url);
+    return true;
+  }
 }
