@@ -38,6 +38,7 @@ dependencies:
   url_launcher: ^6.0.17
   native_pdf_view: ^5.0.0
   path_provider: ^2.0.8
+  sqflite_common_ffi: ^2.1.0+2
 
 dev_dependencies:
   flutter_test:
