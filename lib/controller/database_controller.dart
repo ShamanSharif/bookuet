@@ -3,6 +3,7 @@
 
 import 'dart:io';
 
+import 'package:bookuet/model/constants.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -50,10 +51,16 @@ class DBController {
         options: OpenDatabaseOptions(
           version: 1,
           onCreate: (db, version) async {
-            // await db.execute('''CREATE TABLE ${FixedTaskTable.name} (
-            //     id INTEGER PRIMARY KEY AUTOINCREMENT,
-            //     ${FixedTaskTable.colTaskTitle} TEXT NOT NULL
-            //   )''');
+            await db.execute('''CREATE TABLE ${WishListTable.tableName} (
+                ${WishListTable.colId} INTEGER PRIMARY KEY AUTOINCREMENT,
+                ${WishListTable.colBookId} TEXT NOT NULL,
+                ${WishListTable.colTitle} TEXT NOT NULL,
+                ${WishListTable.colSubtitle} TEXT NOT NULL,
+                ${WishListTable.colAuthors} TEXT NOT NULL,
+                ${WishListTable.colImageUrl} TEXT NOT NULL,
+                ${WishListTable.colBookUrl} TEXT NOT NULL
+              )''');
+
             // await db.execute('''CREATE TABLE ${TaskTable.name} (
             //     id INTEGER PRIMARY KEY AUTOINCREMENT,
             //     ${TaskTable.colTaskDate} TEXT NOT NULL,

@@ -1,4 +1,5 @@
 import 'package:bookuet/controller/data_fetcher.dart';
+import 'package:bookuet/controller/database_controller.dart';
 import 'package:bookuet/controller/responsive.dart';
 import 'package:bookuet/model/book.dart';
 import 'package:bookuet/model/constants.dart';
@@ -14,6 +15,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  final DBController _dbController = DBController.instance;
   final DataFetcher dataFetcher = DataFetcher();
   List<Book>? recentBooks;
 
@@ -36,6 +38,19 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColor.background,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.favorite,
+              color: CustomColor.textColor,
+            ),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Responsive(
           mobile: SingleChildScrollView(
