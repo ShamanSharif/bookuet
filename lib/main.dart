@@ -1,7 +1,15 @@
+import 'package:bookuet/model/wishlist.dart';
 import 'package:bookuet/view/home_view.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter();
+  Hive.registerAdapter(WishlistAdapter());
+  await Hive.openBox<Wishlist>('wishlist');
+
   runApp(const MyApp());
 }
 

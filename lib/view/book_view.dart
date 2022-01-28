@@ -2,8 +2,11 @@ import 'package:bookuet/controller/data_fetcher.dart';
 import 'package:bookuet/controller/responsive.dart';
 import 'package:bookuet/model/book.dart';
 import 'package:bookuet/model/constants.dart';
+import 'package:bookuet/model/wishlist.dart';
 import 'package:bookuet/view/book_reader.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BookView extends StatefulWidget {
@@ -18,11 +21,13 @@ class _BookViewState extends State<BookView> {
   final DataFetcher dataFetcher = DataFetcher();
   BookDetails? bookDetails;
   late Book book;
+  bool onFav = false;
 
   @override
   void initState() {
     book = widget.book;
     fetchBook();
+    isOnFav();
     super.initState();
   }
 
@@ -32,6 +37,15 @@ class _BookViewState extends State<BookView> {
       bookDetails = fetchedBook;
     });
   }
+
+  isOnFav() async {}
+
+  addToFav(Wishlist book) {
+    final wishlistBox = Hive.box<Wishlist>('wishlist');
+    wishlistBox.add(book);
+  }
+
+  removeFromFav() async {}
 
   void _launchURL({required String url}) async {
     if (!await launch(url)) throw 'Could not launch $url';
@@ -87,6 +101,34 @@ class _BookViewState extends State<BookView> {
                               padding:
                                   const EdgeInsets.symmetric(vertical: 10.0),
                               child: Text(book.authors),
+                            ),
+                            MaterialButton(
+                              color: CustomColor.textColor,
+                              onPressed: () {
+                                if (onFav) {
+                                  removeFromFav();
+                                } else {
+                                  addToFav(
+                                    Wishlist(
+                                      bookId: book.id,
+                                      title: book.title,
+                                      subtitle: book.subtitle,
+                                      authors: book.authors,
+                                      imageUrl: book.imageUrl,
+                                      bookUrl: book.bookUrl,
+                                    ),
+                                  );
+                                }
+                              },
+                              child: Text(
+                                onFav
+                                    ? "Remove from Favourite"
+                                    : "Add to Favourite",
+                                style: TextStyle(
+                                  color: CustomColor.light,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -233,6 +275,34 @@ class _BookViewState extends State<BookView> {
                               ),
                             ),
                           ),
+                          MaterialButton(
+                            color: CustomColor.textColor,
+                            onPressed: () {
+                              if (onFav) {
+                                removeFromFav();
+                              } else {
+                                addToFav(
+                                  Wishlist(
+                                    bookId: book.id,
+                                    title: book.title,
+                                    subtitle: book.subtitle,
+                                    authors: book.authors,
+                                    imageUrl: book.imageUrl,
+                                    bookUrl: book.bookUrl,
+                                  ),
+                                );
+                              }
+                            },
+                            child: Text(
+                              onFav
+                                  ? "Remove from Favourite"
+                                  : "Add to Favourite",
+                              style: TextStyle(
+                                color: CustomColor.light,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                       bookDetails != null
@@ -370,6 +440,34 @@ class _BookViewState extends State<BookView> {
                               book.authors,
                               style: TextStyle(
                                 color: CustomColor.textColor,
+                              ),
+                            ),
+                          ),
+                          MaterialButton(
+                            color: CustomColor.textColor,
+                            onPressed: () {
+                              if (onFav) {
+                                removeFromFav();
+                              } else {
+                                addToFav(
+                                  Wishlist(
+                                    bookId: book.id,
+                                    title: book.title,
+                                    subtitle: book.subtitle,
+                                    authors: book.authors,
+                                    imageUrl: book.imageUrl,
+                                    bookUrl: book.bookUrl,
+                                  ),
+                                );
+                              }
+                            },
+                            child: Text(
+                              onFav
+                                  ? "Remove from Favourite"
+                                  : "Add to Favourite",
+                              style: TextStyle(
+                                color: CustomColor.light,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),

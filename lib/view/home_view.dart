@@ -1,5 +1,4 @@
 import 'package:bookuet/controller/data_fetcher.dart';
-import 'package:bookuet/controller/database_controller.dart';
 import 'package:bookuet/controller/responsive.dart';
 import 'package:bookuet/model/book.dart';
 import 'package:bookuet/model/constants.dart';
@@ -15,7 +14,6 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final DBController _dbController = DBController.instance;
   final DataFetcher dataFetcher = DataFetcher();
   List<Book>? recentBooks;
 
