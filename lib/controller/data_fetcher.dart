@@ -13,20 +13,22 @@ class DataFetcher {
       var data = response.data;
       int i = 0;
       for (var b in data["books"]) {
-        books.add(
-          Book(
-            id: b["id"],
-            title: b["title"],
-            subtitle: b["subtitle"],
-            authors: b["authors"],
-            imageUrl: b["image"],
-            bookUrl: b["url"],
-          ),
-        );
-        i++;
-        if (i == 4) {
-          break;
-        }
+        try {
+          books.add(
+            Book(
+              id: b["id"],
+              title: b["title"],
+              subtitle: b["subtitle"],
+              authors: b["authors"],
+              imageUrl: b["image"],
+              bookUrl: b["url"],
+            ),
+          );
+          i++;
+          if (i == 4) {
+            break;
+          }
+        } catch (e) {}
       }
     }
     return books;
@@ -40,16 +42,18 @@ class DataFetcher {
       var data = response.data;
 
       for (var b in data["books"]) {
-        books.add(
-          Book(
-            id: b["id"],
-            title: b["title"],
-            subtitle: b["subtitle"],
-            authors: b["authors"],
-            imageUrl: b["image"],
-            bookUrl: b["url"],
-          ),
-        );
+        try {
+          books.add(
+            Book(
+              id: b["id"],
+              title: b["title"],
+              subtitle: b["subtitle"],
+              authors: b["authors"],
+              imageUrl: b["image"],
+              bookUrl: b["url"],
+            ),
+          );
+        } catch (e) {}
       }
     }
     return books;
@@ -60,14 +64,16 @@ class DataFetcher {
     String url = API.bookDetails + bookId;
     Response response = await _connectionHelper.getData(url: url);
     if (response.statusCode == 200) {
-      var b = response.data;
-      bookDetails = BookDetails(
-        description: b["description"],
-        publisher: b["publisher"],
-        pages: b["pages"],
-        year: b["year"],
-        downloadUrl: b["download"],
-      );
+      try {
+        var b = response.data;
+        bookDetails = BookDetails(
+          description: b["description"],
+          publisher: b["publisher"],
+          pages: b["pages"],
+          year: b["year"],
+          downloadUrl: b["download"],
+        );
+      } catch (e) {}
     }
     return bookDetails;
   }
