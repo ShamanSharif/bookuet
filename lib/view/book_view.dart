@@ -38,14 +38,38 @@ class _BookViewState extends State<BookView> {
     });
   }
 
-  isOnFav() async {}
-
-  addToFav(Wishlist book) {
+  isOnFav() {
     final wishlistBox = Hive.box<Wishlist>('wishlist');
-    wishlistBox.add(book);
+    for (Wishlist wishlistBook in wishlistBox.values) {
+      if (wishlistBook.bookId == book.id) {
+        setState(() {
+          onFav = true;
+        });
+        break;
+      }
+    }
   }
 
-  removeFromFav() async {}
+  addToFav(Wishlist wishlistBook) {
+    final wishlistBox = Hive.box<Wishlist>('wishlist');
+    wishlistBox.add(wishlistBook);
+    setState(() {
+      onFav = true;
+    });
+  }
+
+  removeFromFav() {
+    final wishlistBox = Hive.box<Wishlist>('wishlist');
+    for (Wishlist wishlistBook in wishlistBox.values) {
+      if (wishlistBook.bookId == book.id) {
+        wishlistBook.delete();
+        setState(() {
+          onFav = false;
+        });
+        break;
+      }
+    }
+  }
 
   void _launchURL({required String url}) async {
     if (!await launch(url)) throw 'Could not launch $url';

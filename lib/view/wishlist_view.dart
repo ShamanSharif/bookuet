@@ -25,7 +25,9 @@ class _WishlistViewState extends State<WishlistView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text("Wishlist"),
+      ),
       body: ValueListenableBuilder<Box<Wishlist>>(
         valueListenable: Hive.box<Wishlist>('wishlist').listenable(),
         builder: (context, box, _) {
@@ -56,10 +58,6 @@ class _WishlistViewState extends State<WishlistView> {
             leading: Image.network(wishlist[index].imageUrl),
             title: Text(wishlist[index].title),
             subtitle: Text(wishlist[index].authors),
-            trailing: IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.delete_outline_rounded),
-            ),
           );
         });
   }

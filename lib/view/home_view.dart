@@ -4,6 +4,7 @@ import 'package:bookuet/model/book.dart';
 import 'package:bookuet/model/constants.dart';
 import 'package:bookuet/model/hero_section.dart';
 import 'package:bookuet/view/book_view.dart';
+import 'package:bookuet/view/wishlist_view.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatefulWidget {
@@ -41,7 +42,14 @@ class _HomeViewState extends State<HomeView> {
         elevation: 0.0,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const WishlistView(),
+                ),
+              );
+            },
             icon: Icon(
               Icons.favorite,
               color: CustomColor.textColor,
