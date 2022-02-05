@@ -1,8 +1,10 @@
+import 'package:bookuet/model/user.dart';
 import 'package:bookuet/model/wishlist.dart';
 import 'package:bookuet/view/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,13 +26,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Bookeut',
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-        fontFamily: "Domine",
+    return ChangeNotifierProvider(
+      create: (context) => User(),
+      child: MaterialApp(
+        title: 'Bookeut',
+        theme: ThemeData(
+          primarySwatch: Colors.deepPurple,
+          fontFamily: "Domine",
+        ),
+        home: const HomeView(),
       ),
-      home: const HomeView(),
     );
   }
 }
