@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "498116775877",
+    "project_id": "bookuet-app",
+    "storage_bucket": "bookuet-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498116775877:android:09457c308f3521b2f4c5ac",
+        "android_client_info": {
+          "package_name": "com.appiatto.bookuet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "498116775877-oic3vl4kbs3fc2ieq7uhlpi7dmtvvvpt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.appiatto.bookuet",
+            "certificate_hash": "22ed4986e33878add8dca81e187d5d1418aea38e"
+          }
+        },
+        {
+          "client_id": "498116775877-got490s4d3jsbvaie0973mqovbhhfruc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRN8s1O_3tdD9KAQ7eFrK30SPw-9M6dSM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "498116775877-got490s4d3jsbvaie0973mqovbhhfruc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,10 +2,15 @@ import 'package:bookuet/model/wishlist.dart';
 import 'package:bookuet/view/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // initialize firebase core
+  await Firebase.initializeApp();
+
+  // initialize hive database
   await Hive.initFlutter();
   Hive.registerAdapter(WishlistAdapter());
   await Hive.openBox<Wishlist>('wishlist');

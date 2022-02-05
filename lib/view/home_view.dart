@@ -40,22 +40,20 @@ class _HomeViewState extends State<HomeView> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const WishlistView(),
-                ),
-              );
-            },
-            icon: Icon(
-              Icons.favorite,
-              color: CustomColor.textColor,
-            ),
+      ),
+      extendBodyBehindAppBar: true,
+      drawer: Drawer(
+        child: SafeArea(
+          child: Column(
+            children: const [
+              Text("Bookuet"),
+              ListTile(
+                leading: Icon(Icons.favorite),
+                title: Text("Favorite"),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
       body: SafeArea(
         child: Responsive(
