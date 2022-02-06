@@ -22,12 +22,14 @@ class _BookViewState extends State<BookView> {
   BookDetails? bookDetails;
   late Book book;
   bool onFav = false;
+  int? bookRating;
 
   @override
   void initState() {
     book = widget.book;
     fetchBook();
     isOnFav();
+    bookRating = 4;
     super.initState();
   }
 
@@ -170,6 +172,17 @@ class _BookViewState extends State<BookView> {
                                       ),
                                     ),
                                   ),
+                                  bookRating != null
+                                      ? Text(
+                                          bookRating == 0
+                                              ? "Rating: Not rated yet"
+                                              : "Rating: $bookRating out of 5",
+                                          style: TextStyle(
+                                            color: CustomColor.textColor,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )
+                                      : const SizedBox(),
                                   Text(
                                     "Publisher: ${bookDetails!.publisher}",
                                     style: TextStyle(
@@ -196,53 +209,91 @@ class _BookViewState extends State<BookView> {
                             : const SizedBox(),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 20.0),
-                          child: Row(
+                          child: Column(
                             children: [
-                              Expanded(
-                                child: MaterialButton(
-                                  color: CustomColor.textColor,
-                                  onPressed: bookDetails == null
-                                      ? null
-                                      : () {
-                                          _launchURL(
-                                              url: bookDetails!.downloadUrl);
-                                        },
-                                  child: Text(
-                                    "Download",
-                                    style: TextStyle(
-                                      color: CustomColor.light,
-                                      fontWeight: FontWeight.bold,
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: MaterialButton(
+                                      color: CustomColor.textColor,
+                                      onPressed: bookDetails == null
+                                          ? null
+                                          : () {
+                                              _launchURL(
+                                                  url:
+                                                      bookDetails!.downloadUrl);
+                                            },
+                                      child: Text(
+                                        "Download",
+                                        style: TextStyle(
+                                          color: CustomColor.light,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: MaterialButton(
-                                  color: CustomColor.textColor,
-                                  onPressed: bookDetails == null
-                                      ? null
-                                      : () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (_) => BookReader(
-                                                bookUrl:
-                                                    bookDetails!.downloadUrl,
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                  child: Text(
-                                    "Read Now",
-                                    style: TextStyle(
-                                      color: CustomColor.light,
-                                      fontWeight: FontWeight.bold,
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                    child: MaterialButton(
+                                      color: CustomColor.textColor,
+                                      onPressed: bookDetails == null
+                                          ? null
+                                          : () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (_) => BookReader(
+                                                    bookUrl: bookDetails!
+                                                        .downloadUrl,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                      child: Text(
+                                        "Read Now",
+                                        style: TextStyle(
+                                          color: CustomColor.light,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: MaterialButton(
+                                      color: CustomColor.textColor,
+                                      onPressed: () {},
+                                      child: Text(
+                                        "Rate",
+                                        style: TextStyle(
+                                          color: CustomColor.light,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                    child: MaterialButton(
+                                      color: CustomColor.textColor,
+                                      onPressed: () {},
+                                      child: Text(
+                                        "Chat",
+                                        style: TextStyle(
+                                          color: CustomColor.light,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -343,6 +394,17 @@ class _BookViewState extends State<BookView> {
                                     ),
                                   ),
                                 ),
+                                bookRating != null
+                                    ? Text(
+                                        bookRating == 0
+                                            ? "Rating: Not rated yet"
+                                            : "Rating: $bookRating out of 5",
+                                        style: TextStyle(
+                                          color: CustomColor.textColor,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    : const SizedBox(),
                                 Text(
                                   "Publisher: ${bookDetails!.publisher}",
                                   style: TextStyle(
@@ -369,52 +431,90 @@ class _BookViewState extends State<BookView> {
                           : const SizedBox(),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20.0),
-                        child: Row(
+                        child: Column(
                           children: [
-                            Expanded(
-                              child: MaterialButton(
-                                color: CustomColor.textColor,
-                                onPressed: bookDetails == null
-                                    ? null
-                                    : () {
-                                        _launchURL(
-                                            url: bookDetails!.downloadUrl);
-                                      },
-                                child: Text(
-                                  "Download",
-                                  style: TextStyle(
-                                    color: CustomColor.light,
-                                    fontWeight: FontWeight.bold,
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: MaterialButton(
+                                    color: CustomColor.textColor,
+                                    onPressed: bookDetails == null
+                                        ? null
+                                        : () {
+                                            _launchURL(
+                                                url: bookDetails!.downloadUrl);
+                                          },
+                                    child: Text(
+                                      "Download",
+                                      style: TextStyle(
+                                        color: CustomColor.light,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: MaterialButton(
-                                color: CustomColor.textColor,
-                                onPressed: bookDetails == null
-                                    ? null
-                                    : () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (_) => BookReader(
-                                              bookUrl: bookDetails!.downloadUrl,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                child: Text(
-                                  "Read Now",
-                                  style: TextStyle(
-                                    color: CustomColor.light,
-                                    fontWeight: FontWeight.bold,
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: MaterialButton(
+                                    color: CustomColor.textColor,
+                                    onPressed: bookDetails == null
+                                        ? null
+                                        : () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (_) => BookReader(
+                                                  bookUrl:
+                                                      bookDetails!.downloadUrl,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                    child: Text(
+                                      "Read Now",
+                                      style: TextStyle(
+                                        color: CustomColor.light,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: MaterialButton(
+                                    color: CustomColor.textColor,
+                                    onPressed: () {},
+                                    child: Text(
+                                      "Rate",
+                                      style: TextStyle(
+                                        color: CustomColor.light,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: MaterialButton(
+                                    color: CustomColor.textColor,
+                                    onPressed: () {},
+                                    child: Text(
+                                      "Chat",
+                                      style: TextStyle(
+                                        color: CustomColor.light,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -511,6 +611,17 @@ class _BookViewState extends State<BookView> {
                                     ),
                                   ),
                                 ),
+                                bookRating != null
+                                    ? Text(
+                                        bookRating == 0
+                                            ? "Rating: Not rated yet"
+                                            : "Rating: $bookRating out of 5",
+                                        style: TextStyle(
+                                          color: CustomColor.textColor,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    : const SizedBox(),
                                 Text(
                                   "Publisher: ${bookDetails!.publisher}",
                                   style: TextStyle(
@@ -537,49 +648,88 @@ class _BookViewState extends State<BookView> {
                           : const SizedBox(),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20.0),
-                        child: Row(
+                        child: Column(
                           children: [
-                            MaterialButton(
-                              minWidth: 200,
-                              color: CustomColor.textColor,
-                              onPressed: bookDetails == null
-                                  ? null
-                                  : () {
-                                      _launchURL(url: bookDetails!.downloadUrl);
-                                    },
-                              child: Text(
-                                "Download",
-                                style: TextStyle(
-                                  color: CustomColor.light,
-                                  fontWeight: FontWeight.bold,
+                            Row(
+                              children: [
+                                MaterialButton(
+                                  minWidth: 200,
+                                  color: CustomColor.textColor,
+                                  onPressed: bookDetails == null
+                                      ? null
+                                      : () {
+                                          _launchURL(
+                                              url: bookDetails!.downloadUrl);
+                                        },
+                                  child: Text(
+                                    "Download",
+                                    style: TextStyle(
+                                      color: CustomColor.light,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            MaterialButton(
-                              minWidth: 200,
-                              color: CustomColor.textColor,
-                              onPressed: bookDetails == null
-                                  ? null
-                                  : () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) => BookReader(
-                                            bookUrl: bookDetails!.downloadUrl,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                              child: Text(
-                                "Read Now",
-                                style: TextStyle(
-                                  color: CustomColor.light,
-                                  fontWeight: FontWeight.bold,
+                                const SizedBox(
+                                  width: 10,
                                 ),
-                              ),
+                                MaterialButton(
+                                  minWidth: 200,
+                                  color: CustomColor.textColor,
+                                  onPressed: bookDetails == null
+                                      ? null
+                                      : () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) => BookReader(
+                                                bookUrl:
+                                                    bookDetails!.downloadUrl,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                  child: Text(
+                                    "Read Now",
+                                    style: TextStyle(
+                                      color: CustomColor.light,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: MaterialButton(
+                                    color: CustomColor.textColor,
+                                    onPressed: () {},
+                                    child: Text(
+                                      "Rate",
+                                      style: TextStyle(
+                                        color: CustomColor.light,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: MaterialButton(
+                                    color: CustomColor.textColor,
+                                    onPressed: () {},
+                                    child: Text(
+                                      "Chat",
+                                      style: TextStyle(
+                                        color: CustomColor.light,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
