@@ -9,12 +9,7 @@ class ConnectionHelper {
     try {
       print(url);
       Dio dio = new Dio();
-      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-          (HttpClient client) {
-        client.badCertificateCallback =
-            (X509Certificate cert, String host, int port) => true;
-        return client;
-      };
+
       Response<dynamic> response = await dio.get(url);
       return response;
     } catch (e) {
@@ -52,12 +47,7 @@ class ConnectionHelper {
   Future<Response> downloadFile({required String url}) async {
     try {
       Dio dio = new Dio();
-      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-          (HttpClient client) {
-        client.badCertificateCallback =
-            (X509Certificate cert, String host, int port) => true;
-        return client;
-      };
+
       String fileName = "read_now";
       String savePath = await getFilePath(fileName);
       Response<dynamic> response = await dio.download(
