@@ -82,4 +82,37 @@ class DataFetcher {
     Response<dynamic> response = await _connectionHelper.downloadFile(url: url);
     return true;
   }
+
+  Future<double?> getBookRating({required String bookId}) async {
+    Response<dynamic> response =
+        await _connectionHelper.getData(url: API.bookReview);
+    if (response != null) {
+      if (response.statusCode == 200) {
+        var data = response.data;
+        int counter = 0;
+        int rating = 0;
+        for (var d in data) {
+          if (d["book_id"] == bookId) {
+            rating += int.parse(d["rating"].toString());
+            counter++;
+          }
+        }
+        if (counter > 0) {
+          return rating / counter;
+        }
+      }
+    }
+  }
+
+  Future<bool> rateBook({required String bookId, required int rate}) async {
+    dynamic data = {"book_id": bookId, "rating": rate};
+    Response<dynamic>? response =
+        await _connectionHelper.postData(url: API.bookReview, data: data);
+    if (response != null) {
+      if (response.statusCode == 201) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

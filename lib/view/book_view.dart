@@ -22,14 +22,15 @@ class _BookViewState extends State<BookView> {
   BookDetails? bookDetails;
   late Book book;
   bool onFav = false;
-  int? bookRating;
+  double? bookRating;
+  int newRating = 0;
 
   @override
   void initState() {
     book = widget.book;
     fetchBook();
     isOnFav();
-    bookRating = 4;
+    fetchBookRating();
     super.initState();
   }
 
@@ -38,6 +39,15 @@ class _BookViewState extends State<BookView> {
     setState(() {
       bookDetails = fetchedBook;
     });
+  }
+
+  fetchBookRating() async {
+    double? rating = await dataFetcher.getBookRating(bookId: book.id);
+    if (rating != null) {
+      setState(() {
+        bookRating = rating;
+      });
+    }
   }
 
   isOnFav() {
@@ -71,6 +81,11 @@ class _BookViewState extends State<BookView> {
         break;
       }
     }
+  }
+
+  Future<bool> postReview(int rate) async {
+    bool status = await dataFetcher.rateBook(bookId: book.id, rate: rate);
+    return status;
   }
 
   void _launchURL({required String url}) async {
@@ -172,17 +187,15 @@ class _BookViewState extends State<BookView> {
                                       ),
                                     ),
                                   ),
-                                  bookRating != null
-                                      ? Text(
-                                          bookRating == 0
-                                              ? "Rating: Not rated yet"
-                                              : "Rating: $bookRating out of 5",
-                                          style: TextStyle(
-                                            color: CustomColor.textColor,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        )
-                                      : const SizedBox(),
+                                  Text(
+                                    bookRating != null
+                                        ? "Rating: Not rated yet"
+                                        : "Rating: $bookRating out of 5",
+                                    style: TextStyle(
+                                      color: CustomColor.textColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                   Text(
                                     "Publisher: ${bookDetails!.publisher}",
                                     style: TextStyle(
@@ -211,6 +224,100 @@ class _BookViewState extends State<BookView> {
                           padding: const EdgeInsets.symmetric(vertical: 20.0),
                           child: Column(
                             children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 20.0),
+                                child: Expanded(
+                                  child: MaterialButton(
+                                    color: CustomColor.textColor,
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return Material(
+                                              child: Center(
+                                                  child: Container(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.4,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.8,
+                                                color: Colors.black,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    DropdownButton<int>(
+                                                      items: const [
+                                                        DropdownMenuItem<int>(
+                                                          child: Text("1"),
+                                                          value: 1,
+                                                        ),
+                                                        DropdownMenuItem<int>(
+                                                          child: Text("2"),
+                                                          value: 2,
+                                                        ),
+                                                        DropdownMenuItem<int>(
+                                                          child: Text("3"),
+                                                          value: 3,
+                                                        ),
+                                                        DropdownMenuItem<int>(
+                                                          child: Text("4"),
+                                                          value: 4,
+                                                        ),
+                                                        DropdownMenuItem<int>(
+                                                          child: Text("5"),
+                                                          value: 5,
+                                                        )
+                                                      ],
+                                                      onChanged: (val) =>
+                                                          setState(() {
+                                                        newRating = val ?? 0;
+                                                      }),
+                                                      isExpanded: true,
+                                                    ),
+                                                    MaterialButton(
+                                                      color:
+                                                          CustomColor.textColor,
+                                                      onPressed: newRating == 0
+                                                          ? null
+                                                          : () {
+                                                              postReview(
+                                                                  newRating);
+                                                              fetchBookRating();
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                      child: Text(
+                                                        "Post",
+                                                        style: TextStyle(
+                                                          color:
+                                                              CustomColor.light,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )),
+                                            );
+                                          });
+                                    },
+                                    child: Text(
+                                      "Rate this book",
+                                      style: TextStyle(
+                                        color: CustomColor.light,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                               Row(
                                 children: [
                                   Expanded(
@@ -253,39 +360,6 @@ class _BookViewState extends State<BookView> {
                                             },
                                       child: Text(
                                         "Read Now",
-                                        style: TextStyle(
-                                          color: CustomColor.light,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: MaterialButton(
-                                      color: CustomColor.textColor,
-                                      onPressed: () {},
-                                      child: Text(
-                                        "Rate",
-                                        style: TextStyle(
-                                          color: CustomColor.light,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Expanded(
-                                    child: MaterialButton(
-                                      color: CustomColor.textColor,
-                                      onPressed: () {},
-                                      child: Text(
-                                        "Chat",
                                         style: TextStyle(
                                           color: CustomColor.light,
                                           fontWeight: FontWeight.bold,
@@ -394,17 +468,15 @@ class _BookViewState extends State<BookView> {
                                     ),
                                   ),
                                 ),
-                                bookRating != null
-                                    ? Text(
-                                        bookRating == 0
-                                            ? "Rating: Not rated yet"
-                                            : "Rating: $bookRating out of 5",
-                                        style: TextStyle(
-                                          color: CustomColor.textColor,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      )
-                                    : const SizedBox(),
+                                Text(
+                                  bookRating != null
+                                      ? "Rating: Not rated yet"
+                                      : "Rating: $bookRating out of 5",
+                                  style: TextStyle(
+                                    color: CustomColor.textColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                                 Text(
                                   "Publisher: ${bookDetails!.publisher}",
                                   style: TextStyle(
@@ -433,6 +505,100 @@ class _BookViewState extends State<BookView> {
                         padding: const EdgeInsets.symmetric(vertical: 20.0),
                         child: Column(
                           children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 20.0),
+                              child: Expanded(
+                                child: MaterialButton(
+                                  color: CustomColor.textColor,
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return Material(
+                                            child: Center(
+                                                child: Container(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.4,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.8,
+                                              color: Colors.black,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  DropdownButton<int>(
+                                                    items: const [
+                                                      DropdownMenuItem<int>(
+                                                        child: Text("1"),
+                                                        value: 1,
+                                                      ),
+                                                      DropdownMenuItem<int>(
+                                                        child: Text("2"),
+                                                        value: 2,
+                                                      ),
+                                                      DropdownMenuItem<int>(
+                                                        child: Text("3"),
+                                                        value: 3,
+                                                      ),
+                                                      DropdownMenuItem<int>(
+                                                        child: Text("4"),
+                                                        value: 4,
+                                                      ),
+                                                      DropdownMenuItem<int>(
+                                                        child: Text("5"),
+                                                        value: 5,
+                                                      )
+                                                    ],
+                                                    onChanged: (val) =>
+                                                        setState(() {
+                                                      newRating = val ?? 0;
+                                                    }),
+                                                    isExpanded: true,
+                                                  ),
+                                                  MaterialButton(
+                                                    color:
+                                                        CustomColor.textColor,
+                                                    onPressed: newRating == 0
+                                                        ? null
+                                                        : () {
+                                                            postReview(
+                                                                newRating);
+                                                            fetchBookRating();
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                    child: Text(
+                                                      "Post",
+                                                      style: TextStyle(
+                                                        color:
+                                                            CustomColor.light,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )),
+                                          );
+                                        });
+                                  },
+                                  child: Text(
+                                    "Rate this book",
+                                    style: TextStyle(
+                                      color: CustomColor.light,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                             Row(
                               children: [
                                 Expanded(
@@ -474,39 +640,6 @@ class _BookViewState extends State<BookView> {
                                           },
                                     child: Text(
                                       "Read Now",
-                                      style: TextStyle(
-                                        color: CustomColor.light,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: MaterialButton(
-                                    color: CustomColor.textColor,
-                                    onPressed: () {},
-                                    child: Text(
-                                      "Rate",
-                                      style: TextStyle(
-                                        color: CustomColor.light,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: MaterialButton(
-                                    color: CustomColor.textColor,
-                                    onPressed: () {},
-                                    child: Text(
-                                      "Chat",
                                       style: TextStyle(
                                         color: CustomColor.light,
                                         fontWeight: FontWeight.bold,
@@ -611,17 +744,15 @@ class _BookViewState extends State<BookView> {
                                     ),
                                   ),
                                 ),
-                                bookRating != null
-                                    ? Text(
-                                        bookRating == 0
-                                            ? "Rating: Not rated yet"
-                                            : "Rating: $bookRating out of 5",
-                                        style: TextStyle(
-                                          color: CustomColor.textColor,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      )
-                                    : const SizedBox(),
+                                Text(
+                                  bookRating != null
+                                      ? "Rating: Not rated yet"
+                                      : "Rating: $bookRating out of 5",
+                                  style: TextStyle(
+                                    color: CustomColor.textColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                                 Text(
                                   "Publisher: ${bookDetails!.publisher}",
                                   style: TextStyle(
@@ -650,6 +781,100 @@ class _BookViewState extends State<BookView> {
                         padding: const EdgeInsets.symmetric(vertical: 20.0),
                         child: Column(
                           children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 20.0),
+                              child: Expanded(
+                                child: MaterialButton(
+                                  color: CustomColor.textColor,
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return Material(
+                                            child: Center(
+                                                child: Container(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.4,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.8,
+                                              color: Colors.black,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  DropdownButton<int>(
+                                                    items: const [
+                                                      DropdownMenuItem<int>(
+                                                        child: Text("1"),
+                                                        value: 1,
+                                                      ),
+                                                      DropdownMenuItem<int>(
+                                                        child: Text("2"),
+                                                        value: 2,
+                                                      ),
+                                                      DropdownMenuItem<int>(
+                                                        child: Text("3"),
+                                                        value: 3,
+                                                      ),
+                                                      DropdownMenuItem<int>(
+                                                        child: Text("4"),
+                                                        value: 4,
+                                                      ),
+                                                      DropdownMenuItem<int>(
+                                                        child: Text("5"),
+                                                        value: 5,
+                                                      )
+                                                    ],
+                                                    onChanged: (val) =>
+                                                        setState(() {
+                                                      newRating = val ?? 0;
+                                                    }),
+                                                    isExpanded: true,
+                                                  ),
+                                                  MaterialButton(
+                                                    color:
+                                                        CustomColor.textColor,
+                                                    onPressed: newRating == 0
+                                                        ? null
+                                                        : () {
+                                                            postReview(
+                                                                newRating);
+                                                            fetchBookRating();
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                    child: Text(
+                                                      "Post",
+                                                      style: TextStyle(
+                                                        color:
+                                                            CustomColor.light,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )),
+                                          );
+                                        });
+                                  },
+                                  child: Text(
+                                    "Rate this book",
+                                    style: TextStyle(
+                                      color: CustomColor.light,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                             Row(
                               children: [
                                 MaterialButton(
@@ -693,39 +918,6 @@ class _BookViewState extends State<BookView> {
                                     style: TextStyle(
                                       color: CustomColor.light,
                                       fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: MaterialButton(
-                                    color: CustomColor.textColor,
-                                    onPressed: () {},
-                                    child: Text(
-                                      "Rate",
-                                      style: TextStyle(
-                                        color: CustomColor.light,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: MaterialButton(
-                                    color: CustomColor.textColor,
-                                    onPressed: () {},
-                                    child: Text(
-                                      "Chat",
-                                      style: TextStyle(
-                                        color: CustomColor.light,
-                                        fontWeight: FontWeight.bold,
-                                      ),
                                     ),
                                   ),
                                 ),

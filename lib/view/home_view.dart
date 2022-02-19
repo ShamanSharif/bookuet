@@ -3,12 +3,9 @@ import 'package:bookuet/controller/responsive.dart';
 import 'package:bookuet/model/book.dart';
 import 'package:bookuet/model/constants.dart';
 import 'package:bookuet/model/hero_section.dart';
-import 'package:bookuet/model/user.dart';
-import 'package:bookuet/view/auth_screen.dart';
 import 'package:bookuet/view/book_view.dart';
 import 'package:bookuet/view/wishlist_view.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -60,22 +57,6 @@ class _HomeViewState extends State<HomeView> {
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: CustomColor.textColor,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  leading: const Icon(
-                    Icons.account_circle,
-                    size: 54,
-                  ),
-                  title: Text(Provider.of<User>(context).isLoggedIn
-                      ? "${Provider.of<User>(context).userName}"
-                      : "Not Signed In"),
-                  subtitle: const Text("Go to Auth"),
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const AuthScreen(),
                     ),
                   ),
                 ),
