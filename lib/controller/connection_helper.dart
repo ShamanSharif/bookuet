@@ -1,7 +1,6 @@
 import 'dart:io';
-
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ConnectionHelper {
